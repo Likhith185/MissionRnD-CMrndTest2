@@ -37,8 +37,51 @@ struct oddevennode{
 	struct oddevennode * random;
 
 };
-
+void Set_RandomPointers(struct oddevennode *temp, int *odd_length, int *even_length)
+{
+	struct oddevennode *even = NULL;
+	struct oddevennode *odd = NULL;
+	int flag_even = 0, flag_odd = 0;
+	while (temp != NULL)
+	{
+		if (temp->data % 2 != 0 && flag_odd == 1)
+		{
+			(*odd_length)++;
+			odd->random = temp;
+			odd = temp;
+		}
+		if (temp->data % 2 == 0 && flag_even == 1)
+		{
+			(*even_length)++;
+			even->random = temp;
+			even = temp;
+		}
+		if (temp->data % 2 == 0 && flag_even == 0)
+		{
+			(*even_length)++;
+			even = temp;
+			flag_even = 1;
+		}
+		if (temp->data % 2 != 0 && flag_odd == 0)
+		{
+			(*odd_length)++;
+			odd = temp;
+			flag_odd = 1;
+		}
+		temp = temp->next;
+	}
+}
 int * oddeven_sll(struct oddevennode *head){
 
-	return NULL;
+	if (head == NULL)
+		return NULL;
+
+	struct oddevennode *temp = head;
+	int odd_length = 0, even_length = 0;
+	Set_RandomPointers(temp, &odd_length, &even_length);
+
+	int *arr = (int *)malloc(sizeof(int)* 2);
+	*(arr + 0) = odd_length;
+	*(arr + 1) = even_length;
+	return arr;
 }
